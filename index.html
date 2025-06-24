@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <title>RM Digital Bill Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
+    }
+
+    .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ff0000;
+  padding-bottom: 15px;
+  margin: 40px 0 35px; /* <-- Add top margin */
+}
+
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+      color: #ff5100;
+    }
+
+    .header h4 {
+      margin: 4px 0;
+      font-weight: normal;
+      font-size: 14px;
+    }
+    .container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 25px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border: 5px solid red;
+}
+
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .info div {
+      width: 48%;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+      margin-top: 4px;
+    }
+
+    h2 input.num {
+      font-size: 18px;
+      width: 100px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+    }
+
+    th {
+      background-color: #ff0000;
+      color: white;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    #totalSection {
+      margin-top: 25px;
+      text-align: right;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      margin: 10px 5px 0 0;
+      padding: 10px 18px;
+      font-size: 16px;
+      background: #ff0800;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ff0000;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.logo-left {
+  flex: 0 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+    @media print {
+  body {
+    background: white !important;
+    color: black !important;
+    padding: 0;
+    margin: 0;
+  }
+
+  .container {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 10px !important;
+  }
+
+  .btn,
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    display: none !important;
+  }
+
+  input,
+  select {
+    border: none !important;
+    background: transparent !important;
+    pointer-events: none;
+    font-weight: bold;
+  }
+
+  table, th, td {
+    border: 1px solid black !important;
+  }
+
+  th {
+    background-color: #ccc !important;
+    color: black !important;
+  }
+
+  .signature-section {
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
+    font-size: 14px;
+  }
+
+  .thank-you {
+    margin-top: 40px;
+    font-size: 16px;
+    text-align: center;
+    font-style: italic;
+  }
+  
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Bill No <input type="number" class="num" /></h2>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="header">
+      <div class="logo-left">
+        <img src="C:\Users\Server\Documents\WEB\head.png" alt="Lion Logo" width="80px">
+      </div>
+      <div class="text-right">
+        <h1>RM NICE DIGITAL</h1>
+        <h4>T.S.No.9187/2D, New Palace Road, Opp. New Municipal Office</h4>
+        <h4>Pudukkottai, Tamil Nadu - 622001</h4>
+        <h4>📞 +91 994377 8188 / +91 944424 8188</h4>
+        <div>   
+
+    
+        </div> 
+      </div>
+    </div>
+    
+    
+    <div class="info">
+      <div><strong>To:</strong><br /><input type="text" placeholder="Customer Name" /></div>
+      <div><strong>Date:</strong><br /><input type="date" /></div>
+    </div>
+
+    <table id="billTable">
+      <thead>
+        <tr>
+          <th>S. No</th>
+          <th>Particulars</th>
+          <th>Unit Price (INR)</th>
+          <th>Qty</th>
+          <th>GST</th>
+          <th>Total (INR)</th>
+        </tr>
+      </thead>
+      <tbody id="billBody">
+        <tr>
+          <td>1</td>
+          <td><input type="text" placeholder="Item name" /></td>
+          <td><input type="number" value="0" oninput="updateTotal()" /></td>
+          <td><input type="number" value="1" oninput="updateTotal()" /></td>
+          <td>
+            <select onchange="updateTotal()">
+              <option value="with">With GST</option>
+              <option value="without">Without GST</option>
+            </select>
+            <input type="number" value="0" readonly style="margin-top: 4px;" />
+          </td>
+          <td><input type="number" value="0" readonly /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn" onclick="addRow()">➕ Add Item</button>
+
+    <div id="totalSection">
+      Total: ₹<span id="subTotal">0.00</span><br />
+      GST Amount: ₹<span id="gstTotal">0.00</span><br />
+      Grand Total: ₹<span id="grandTotal">0.00</span>
+    </div>
+    <div class="signature-section">
+    
+      <div class="right">
+        <p>__________________________</p>
+        <p>Authorized Signature</p>
+      </div>
+    </div>
+    
+    <div class="thank-you">
+      Thank you for your business!<br>
+      We appreciate your trust in RM NICE DIGITAL.
+    </div>
+    
+
+    <button class="btn" onclick="appendAndPrint()">🖨️ Print</button>
+    <button class="btn" onclick="refreshExcel()">🔄 Refresh</button>
+
+  
+  </div>
+
+  <script>
+    function addRow() {
+      const table = document.getElementById("billBody");
+      const newRow = table.rows[0].cloneNode(true);
+      newRow.cells[0].innerText = table.rows.length + 1;
+      newRow.querySelectorAll("input").forEach(input => {
+        input.value = input.type === "number" ? "0" : "";
+      });
+      newRow.querySelector("select").value = "with";
+      table.appendChild(newRow);
+    }
+  
+    function updateTotal() {
+      let subTotal = 0, gstTotal = 0, grandTotal = 0;
+      const rows = document.querySelectorAll("#billBody tr");
+  
+      rows.forEach(row => {
+        const unitPrice = parseFloat(row.cells[2].querySelector("input").value) || 0;
+        const qty = parseFloat(row.cells[3].querySelector("input").value) || 0;
+        const gstOption = row.cells[4].querySelector("select").value;
+        const gstField = row.cells[4].querySelector("input");
+        const totalField = row.cells[5].querySelector("input");
+  
+        const baseTotal = unitPrice * qty;
+        const gst = gstOption === "with" ? baseTotal * 0.18 : 0;
+        const total = baseTotal + gst;
+  
+        gstField.value = gst.toFixed(2);
+        totalField.value = total.toFixed(2);
+  
+        subTotal += baseTotal;
+        gstTotal += gst;
+        grandTotal += total;
+      });
+  
+      document.getElementById("subTotal").innerText = subTotal.toFixed(2);
+      document.getElementById("gstTotal").innerText = gstTotal.toFixed(2);
+      document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+    }
+  
+    function saveBillToLocal() {
+      const rows = document.querySelectorAll("#billBody tr");
+      const billData = Array.from(rows).map(row => ({
+        sno: row.cells[0].innerText,
+        name: row.cells[1].querySelector("input").value,
+        price: row.cells[2].querySelector("input").value,
+        qty: row.cells[3].querySelector("input").value,
+        gst: row.cells[4].querySelector("input").value,
+        total: row.cells[5].querySelector("input").value
+      }));
+  
+      const summary = {
+        customer: document.querySelector('.info input[type="text"]').value,
+        date: document.querySelector('.info input[type="date"]').value,
+        subTotal: document.getElementById("subTotal").innerText,
+        gstTotal: document.getElementById("gstTotal").innerText,
+        grandTotal: document.getElementById("grandTotal").innerText
+      };
+  
+      const bills = JSON.parse(localStorage.getItem("bills") || "[]");
+      bills.push({ items: billData, summary });
+      localStorage.setItem("bills", JSON.stringify(bills));
+    }
+  
+    
+  // Your existing functions: addRow(), updateTotal(), saveBillToLocal()
+
+  function appendAndPrint() {
+    saveBillToLocal();   // Save in browser storage
+    saveBillsToExcel();  // Export all to one Excel file
+    window.print();      // Then print
+  }
+
+  function saveBillToLocal() {
+    const rows = document.querySelectorAll("#billBody tr");
+    const billData = Array.from(rows).map(row => ({
+      sno: row.cells[0].innerText,
+      name: row.cells[1].querySelector("input").value,
+      price: row.cells[2].querySelector("input").value,
+      qty: row.cells[3].querySelector("input").value,
+      gst: row.cells[4].querySelector("input").value,
+      total: row.cells[5].querySelector("input").value
+    }));
+
+    const summary = {
+      customer: document.querySelector('.info input[type="text"]').value,
+      date: document.querySelector('.info input[type="date"]').value,
+      subTotal: document.getElementById("subTotal").innerText,
+      gstTotal: document.getElementById("gstTotal").innerText,
+      grandTotal: document.getElementById("grandTotal").innerText
+    };
+
+    const bills = JSON.parse(localStorage.getItem("bills") || "[]");
+    bills.push({ items: billData, summary });
+    localStorage.setItem("bills", JSON.stringify(bills));
+  }
+
+  function saveBillsToExcel() {
+    const bills = JSON.parse(localStorage.getItem("bills") || "[]");
+    const data = [["S.No", "Customer", "Date", "Item", "Price", "Qty", "GST", "Total", "Sub Total", "GST Total", "Grand Total"]];
+
+    bills.forEach((bill, index) => {
+      bill.items.forEach(item => {
+        data.push([
+          index + 1,
+          bill.summary.customer,
+          bill.summary.date,
+          item.name,
+          item.price,
+          item.qty,
+          item.gst,
+          item.total,
+          bill.summary.subTotal,
+          bill.summary.gstTotal,
+          bill.summary.grandTotal
+        ]);
+      });
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "All Bills");
+
+    XLSX.writeFile(wb, "database.xlsx");
+  }
+  function refreshExcel() {
+    const confirmClear = confirm("Are you sure you want to clear all saved bills?");
+    if (confirmClear) {
+      localStorage.removeItem("bills");
+      alert("Excel data cleared. New bills will be saved in a fresh file.");
+    }
+  }
+  
+      
+  </script>
+  
+</body>
+</html>
